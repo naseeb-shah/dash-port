@@ -1,0 +1,18 @@
+@font-face {
+    font-family: 'Matter-TRIAL';
+    src: url('./Matter-TRIAL-VF.ttf') format('truetype');
+  }
+  
+  .text-style {
+    color: var(--Text-on-color, #FFF);
+    text-align: center;
+    font-variant-numeric: lining-nums tabular-nums;
+    font-feature-settings: 'liga' off, 'calt' off;
+    font-family: 'Matter-TRIAL';
+    font-size: 18px;
+    font-style: normal;
+    font-weight: 430;
+    line-height: 24px; /* 133.333% */
+    font-variation-settings: var(--framer-font-variation-axes, "wght" 430, "ital" 0, "XHGT" 0, "MONO" 60);
+  }
+  

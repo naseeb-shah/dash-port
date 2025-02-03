@@ -1,0 +1,30 @@
+body {
+  font-family: 'MatterTrial', sans-serif;
+  background-color:white;
+  color:black;
+  margin:0
+}
+
+
+.animated-box {
+  position: relative;
+  animation: reveal-right-to-left 2s ease-in-out forwards;
+  overflow: hidden;
+}
+
+@keyframes reveal-right-to-left {
+  from {
+    clip-path: inset(0 100% 0 0);
+  }
+  to {
+    clip-path: inset(0 0 0 0);
+  }
+}
+::-webkit-scrollbar {
+  width: 0px;
+  background: transparent;
+}
+
+body {
+  overflow-y: scroll; /* Ensures scrolling is still possible */
+}
