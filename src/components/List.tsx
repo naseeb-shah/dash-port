@@ -25,6 +25,7 @@ import { APIUrls } from "../utilis/urls";
 import { FileDownload } from "@mui/icons-material";
 import EmailInputModal from "./Share";
 import StatusSelect from "./Status";
+import { exportToExcel } from "../utilis/xl";
 interface RequestListProps {
   from?: string;
 }
@@ -70,44 +71,8 @@ const RequestList: React.FC<RequestListProps> = ({ from }) => {
 
   const DownloadExcel = async () => {
     setLoading(true);
-    try {
-      const url =
-        APIUrls.baseUrl +
-        `/request/download?search=${searchQuery}&page=${page}&startDate=${startDate}&endDate=${endDate}&by=${searchCriteria}`;
-  
-      // Retrieve the token from localStorage
-      const token = localStorage.getItem("token");
-  
-      const response: any = await axios.get(url, {
-        responseType: "blob",
-        headers: {
-          Authorization: `Bearer ${token}`, // Include Authorization header
-          "Content-Type": "application/json",
-          Accept: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
-        },
-      });
-  
-      // Generate filename
-      let filename = `requests${requests.length}-${Date.now()}.xlsx`;
-  
-      // Create a Blob from the response data
-      const blob = new Blob([response.data], {
-        type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;charset=utf-8",
-      });
-  
-      // Create a download link
-      const link = document.createElement("a");
-      link.href = URL.createObjectURL(blob);
-      link.download = filename;
-      document.body.appendChild(link);
-      link.click();
-      document.body.removeChild(link);
-  
-      setLoading(false);
-    } catch (error) {
-      console.error("Error downloading Excel file:", error);
-      setLoading(false);
-    }
+   exportToExcel(requests,"Requests")
+   setLoading(false)
   };
   
 

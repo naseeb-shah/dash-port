@@ -15,7 +15,8 @@
     "react-router-dom": "^7.1.3",
     "react-scripts": "5.0.1",
     "react-toast-simple": "^1.0.5",
-    "web-vitals": "^4.2.4"
+    "web-vitals": "^4.2.4",
+    "xlsx": "^0.18.5"
   },
   "scripts": {
     "start": "react-scripts start",
