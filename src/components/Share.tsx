@@ -7,9 +7,15 @@ import {
   Box,
   Button,
   Grid,
+  CircularProgress,
 } from "@mui/material";
 import { API } from "../utilis/api";
 import { APIUrls } from "../utilis/urls";
+import Snackbar, { SnackbarOrigin } from '@mui/material/Snackbar';
+
+interface State extends SnackbarOrigin {
+  open: boolean;
+}
 
 interface EmailInputModalProps {
   open: boolean;
@@ -25,6 +31,8 @@ const EmailInputModal: React.FC<EmailInputModalProps> = ({
   const [emails, setEmails] = useState<string[]>([]); // List of valid emails
   const [inputValue, setInputValue] = useState<string>(""); // Current input value
   const [error, setError] = useState<string>(""); // Validation error message
+const [openSnack,setOpenSnack]=useState(false)
+const [loading,setLoading]=useState(false)
 
   // Email validation regex
   const validateEmail = (email: string): boolean => {
@@ -69,6 +77,12 @@ const EmailInputModal: React.FC<EmailInputModalProps> = ({
   };
 
   const handleSubmit = async () => {
+
+    if(emails.length==0){
+      setError("Please add email or press Enter after enter email.")
+      return
+    }
+    setLoading(true)
     try {
       const response: any = await API.postData(
         APIUrls.baseUrl + `/request/share`,
@@ -78,12 +92,15 @@ const EmailInputModal: React.FC<EmailInputModalProps> = ({
         }
       )
         .then((x: any) => {
-          console.log(x, "response");
+          onClose()
         })
         .catch((e: any) => {
-          console.error(e);
+          setError(e.response.massage||"Unable to send emails.")
+          setOpenSnack(true)
         });
-    } catch (e) {}
+    } catch (e) {}finally{
+      setLoading(false)
+    }
   };
   return (
     <Modal open={open} onClose={onClose}>
@@ -99,13 +116,22 @@ const EmailInputModal: React.FC<EmailInputModalProps> = ({
           p: 4,
           borderRadius: 2,
         }}
+
       >
-        <Typography variant="h6" fontWeight={"600"}>
+
+          <Snackbar
+        anchorOrigin={{ vertical:"top", horizontal:"center" }}
+        open={openSnack}
+        onClose={()=>setOpenSnack(false)}
+        message={error}
+        key={"vertical + horizonta"}
+      />
+        <Typography variant="h6" fontWeight={"600"} fontFamily={"Matter-TRIAL"}>
           Request Details
         </Typography>
         <Grid container spacing={2}>
           <Grid item xs={6}>
-            <Typography fontSize={"20px"}>Name : {item.fullName}</Typography>
+            <Typography fontFamily={"Matter-TRIAL"} fontSize={"20px"}>Name : {item.fullName}</Typography>
             <Typography>Role : {item.role}</Typography>
           </Grid>
           <Grid item xs={6}>
@@ -113,10 +139,10 @@ const EmailInputModal: React.FC<EmailInputModalProps> = ({
               {" "}
               Organization : {item.organization}
             </Typography>
-            <Typography>{new Date(item.createdAt).toDateString()}</Typography>
+            <Typography fontFamily={"Matter-TRIAL"}>{new Date(item.createdAt).toDateString()}</Typography>
           </Grid>
         </Grid>
-        <Typography variant="h6">Enter Email Addresses</Typography>
+        <Typography  fontFamily={"Matter-TRIAL"} variant="h6">Enter Email Addresses</Typography>
         <Box
           sx={{
             display: "flex",
@@ -160,7 +186,7 @@ const EmailInputModal: React.FC<EmailInputModalProps> = ({
             sx={{ marginTop: "16px" }}
             onClick={() => handleSubmit()}
           >
-            Share
+           {loading ? <CircularProgress size={24} color="inherit" /> : "Share"}
           </Button>
         </Box>
       </Box>

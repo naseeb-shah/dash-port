@@ -9,7 +9,8 @@ import Auth from "./pages/Auth";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import PrivateRoute from "./pages/PrivateRoute"; // Import the PrivateRoute component
 import { DownloadRequests } from "./pages/Download";
-import { Settings } from "./pages/Settings";
+import  Settings from "./pages/Settings";
+
 
 const theme = createTheme({
   breakpoints: {

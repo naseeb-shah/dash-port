@@ -18,6 +18,7 @@ import {
   Grid,
   Box,
   Modal,
+  CircularProgress,
 } from "@mui/material";
 import { Search as SearchIcon } from "@mui/icons-material";
 import { API } from "../utilis/api";
@@ -192,8 +193,19 @@ const RequestList: React.FC<RequestListProps> = ({ from }) => {
 
       {/* Request List */}
       {loading ? (
-        <Typography>Loading...</Typography>
-      ) : (
+  <Box
+    sx={{
+      display: "flex",
+      justifyContent: "center",
+      alignItems: "center",
+      width: "100%",
+      margin:"auto",
+      marginTop:"100px",
+      marginBottom:"100px"
+    }}
+  >
+    <CircularProgress size={54} color="info" />
+  </Box>) : (
         <List>
           {requests.map((request: any) => (
             <ListItem
@@ -215,6 +227,7 @@ const RequestList: React.FC<RequestListProps> = ({ from }) => {
                       component="span"
                       variant="body2"
                       color="text.primary"
+                      fontFamily={"Matter-TRIAL"}
                     >
                       {request.organization} - {request.workEmail}
                     </Typography>
@@ -223,6 +236,7 @@ const RequestList: React.FC<RequestListProps> = ({ from }) => {
                       component="span"
                       variant="body2"
                       color="text.secondary"
+                      fontFamily={"Matter-TRIAL"}
                     >
                       Role: {request.role}
                     </Typography>
@@ -231,6 +245,7 @@ const RequestList: React.FC<RequestListProps> = ({ from }) => {
                       component="span"
                       variant="body2"
                       color="text.secondary"
+                      fontFamily={"Matter-TRIAL"}
                     >
                       Message: {request.message}
                     </Typography>

@@ -15,7 +15,7 @@ import AdbIcon from '@mui/icons-material/Adb';
 import { ReactComponent as Logo } from "../assets/images/frame.svg";
 import { useNavigate } from 'react-router-dom';
 const pages = [{name:'Requests',path:"/"}, {name:'Download' ,path:"download"}, {name:'Settings',path:"settings"}];
-const settings = ['Settings', , 'Logout'];
+const settings = [{name:'Settings',path:"settings"},  {name:'Logout',path:"/auth"}];
 
 function ResponsiveAppBar() {
   const [anchorElNav, setAnchorElNav] = React.useState<null | HTMLElement>(null);
@@ -35,7 +35,11 @@ const  navigate= useNavigate()
     setAnchorElNav(null);
   };
 
-  const handleCloseUserMenu = () => {
+  const handleCloseUserMenu = (path:string) => {
+    if(path=="/auth"){
+      localStorage.removeItem("token")
+    }
+    navigate(path)
     setAnchorElUser(null);
   };
 
@@ -51,6 +55,7 @@ const  navigate= useNavigate()
             noWrap
             component="a"
             href="#app-bar-with-responsive-menu"
+            fontFamily={"Matter-TRIAL"}
             sx={{
               mr: 2,
               display: { xs: 'none', md: 'flex' },
@@ -93,7 +98,7 @@ const  navigate= useNavigate()
             >
               {pages.map((page) => (
                 <MenuItem key={page.name} onClick={()=>goto(page.path)}>
-                  <Typography sx={{ textAlign: 'center' }}>{page.name}</Typography>
+                  <Typography fontFamily={"Matter-TRIAL"} sx={{ textAlign: 'center' }}>{page.name}</Typography>
                 </MenuItem>
               ))}
             </Menu>
@@ -106,6 +111,7 @@ const  navigate= useNavigate()
             variant="h5"
             noWrap
             component="a"
+            fontFamily={"Matter-TRIAL"}
             href="#app-bar-with-responsive-menu"
             sx={{
               mr: 2,
@@ -154,8 +160,8 @@ const  navigate= useNavigate()
               onClose={handleCloseUserMenu}
             >
               {settings.map((setting) => (
-                <MenuItem key={setting} onClick={handleCloseUserMenu}>
-                  <Typography sx={{ textAlign: 'center' }}>{setting}</Typography>
+                <MenuItem key={setting.name} onClick={()=>handleCloseUserMenu(setting.path)}>
+                  <Typography  fontFamily={"Matter-TRIAL"}sx={{ textAlign: 'center' }}>{setting.name}</Typography>
                 </MenuItem>
               ))}
             </Menu>

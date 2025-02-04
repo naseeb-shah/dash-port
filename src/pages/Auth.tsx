@@ -23,27 +23,43 @@ const OTPForm: React.FC = () => {
   const navigate=useNavigate()
 
   const handleSendOTP = async () => {
+    if(!email){
+      setError("Please Enter Email.");
+      return
+    }
     setLoading(true);
     setError(null);
     setSuccess(null);
 
-    try {
-      await API.postData(APIUrls.authUrl+"/send-otp", { email });
-      setSuccess("OTP sent successfully. Check your email.");
+    
+    await API.postData(APIUrls.authUrl + "/send-otp", { email })
+    .then((response) => {
+      setSuccess(response?.message); // Fix: Typo in 'massage' -> 'message'
       setStep("verify");
-    } catch (err:any) {
-        console.log(err,"err is here")
-      setError(err?.data?.message||"Failed to send OTP. Please try again.");
-    } finally {
-      setLoading(false);
-    }
+    })
+    .catch((err: any) => {
+      console.log(err?.response?.data || err, "err is here");
+  
+      // Extract correct error message
+      const errorMessage =
+        err?.response?.data?.message || err?.message || "Failed to send OTP. Please try again.";
+  
+      setError(errorMessage);
+    });
+  
+    setLoading(false)
   };
 
   const handleVerifyOTP = async () => {
+    if(!otp){
+      setError("Please Enter Email.");
+      return
+    }
     setLoading(true);
     setError(null);
     setSuccess(null);
-
+  
+      
     try {
       const response :any= await axios.post(APIUrls.authUrl+"/verify-otp", { email, otp });
       setSuccess(response.data.message);
